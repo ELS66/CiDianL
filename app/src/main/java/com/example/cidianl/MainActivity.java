@@ -2,6 +2,8 @@ package com.example.cidianl;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,7 +26,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.START | ItemTouchHelper.END) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -70,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
                 final Word wordDelete = allwords.get(viewHolder.getAdapterPosition());
+                String fileName = wordDelete.getEnglish();
+                Log.d("下载",fileName);
                 myViewModel.deleteWords(wordDelete);
                 AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
                 dialog.setTitle("警告");
@@ -83,6 +98,12 @@ public class MainActivity extends AppCompatActivity {
                 dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/2/"+fileName+".mp3";
+                        if (deleteFile(path)){
+                            Toast.makeText(MainActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainActivity.this,"删除失败",Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
                 dialog.show();
@@ -180,10 +201,72 @@ public class MainActivity extends AppCompatActivity {
                     Word word = new Word(x2,x1);
                     myViewModel.insertWords(word);
                     Toast.makeText(MyApplication.getContext(),"添加成功",Toast.LENGTH_SHORT).show();
+                    downloadFile(x2);
                     editTextDialog.dismiss();
                 }
                 return true;
             }
         });
     }
+
+    public void downloadFile(String x1) {
+        final String url = "http://dict.youdao.com/dictvoice?audio=" + x1 ;
+        final long startTime = System.currentTimeMillis();
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Connection", "close")
+                .build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                InputStream is = null;
+                byte[] buf = new byte[2048];
+                int len = 0;
+                FileOutputStream fos = null;
+
+                String savePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/2";
+                try {
+                    is = response.body().byteStream();
+                    long total = response.body().contentLength();
+                    File file = new File(savePath, x1+ ".mp3");
+                    fos = new FileOutputStream(file);
+                    long sum = 0;
+                    while ((len = is.read(buf)) != -1) {
+                        fos.write(buf, 0, len);
+                        sum += len;
+                        int progress = (int) (sum * 1.0f / total * 100);
+                    }
+                    fos.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (is != null)
+                            is.close();
+                    } catch (IOException e) {
+                    }
+                    try {
+                        if (fos != null)
+                            fos.close();
+                    } catch (IOException e) {
+                    }
+                }
+            }
+        });
+    }
+
+    public boolean deleteFile(String filePath) {
+        File file = new File(filePath);
+        if (file.isFile() && file.exists()) {
+            return file.delete();
+        }
+        return false;
+    }
+
+
 }

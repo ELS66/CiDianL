@@ -2,7 +2,9 @@ package com.example.cidianl;
 
 import android.content.Context;
 import android.os.AsyncTask;
+
 import androidx.lifecycle.LiveData;
+
 import java.util.List;
 
 public class WordRepository {
@@ -22,6 +24,10 @@ public class WordRepository {
         return wordDao.findWordWithPattern("%" + pattern  + "%");
     }
 
+    Word getselectWord (String selectWord) {
+        return wordDao.getSelectWord(selectWord);
+    }
+
     void insertWords (Word... words) {
         new InsertAsyncTask (wordDao).execute(words);
     }
@@ -29,6 +35,7 @@ public class WordRepository {
     void deleteWords (Word... words) {
         new DeleteAsyncTask (wordDao).execute(words);
     }
+
 
 
     static class InsertAsyncTask extends AsyncTask<Word,Void,Void> {

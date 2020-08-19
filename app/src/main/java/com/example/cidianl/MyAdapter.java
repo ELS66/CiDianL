@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -43,7 +45,7 @@ public class MyAdapter extends ListAdapter<Word,MyAdapter.MyViewHolder> {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View itemView = layoutInflater.inflate(R.layout.item_card,parent,false);
         final MyViewHolder holder =new MyViewHolder(itemView);
-        holder.voiceButton.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
@@ -58,6 +60,17 @@ public class MyAdapter extends ListAdapter<Word,MyAdapter.MyViewHolder> {
                 }
             }
         });
+        holder.toggleButtonlove.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (buttonView.isChecked()){
+                    Log.d("下载","1");
+                } else {
+                    Log.d("下载","2");
+                }
+            }
+        });
+
         return new MyViewHolder(itemView);
     }
 
@@ -72,12 +85,13 @@ public class MyAdapter extends ListAdapter<Word,MyAdapter.MyViewHolder> {
     static class MyViewHolder extends  RecyclerView.ViewHolder {
         TextView textViewNumber,textViewEnglish,textViewChinese;
         ImageView voiceButton;
+        ToggleButton toggleButtonlove;
         public MyViewHolder (@NonNull View itemView) {
             super(itemView);
             textViewNumber = itemView.findViewById(R.id.textViewNumber);
             textViewEnglish = itemView.findViewById(R.id.textViewEnglish);
             textViewChinese = itemView.findViewById(R.id.textViewChinese);
-            voiceButton = itemView.findViewById(R.id.voiceButton);
+            toggleButtonlove = itemView.findViewById(R.id.toggleButtonlove);
         }
     }
 

@@ -9,11 +9,6 @@
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
     <item
-        android:id="@+id/item_note"
-        android:icon="@drawable/ic_baseline_menu_book_24"
-        android:title="note"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/item_sort"
         android:icon="@drawable/ic_baseline_sort_24"
         android:title="sort"

@@ -24,6 +24,9 @@ public class MyViewModel extends AndroidViewModel {
     LiveData<List<Word>> findWordWithPattern(String pattern) {
         return wordRepository.findWordWithPattern(pattern);
     }
+    Word getselectWord (String selectWord) {
+        return wordRepository.getselectWord(selectWord);
+    }
 
     void insertWords(Word... words) {
         wordRepository.insertWords(words);

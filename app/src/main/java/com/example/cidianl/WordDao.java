@@ -33,4 +33,7 @@ public interface WordDao {
 
     @Update
     void getNewWord(Word...words);
+
+    @Query("SELECT * FROM Word WHERE islike = 1 ORDER BY UID DESC")
+    LiveData<List<Word>> getlikeWord();
 }

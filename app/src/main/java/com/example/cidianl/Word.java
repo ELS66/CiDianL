@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
-public class Word {
+public class Word  {
     @PrimaryKey(autoGenerate = true)
     private int uid;
 
@@ -17,6 +17,7 @@ public class Word {
     private int studyend = 0;
     private boolean isstudy = true;
     private String date;
+    private boolean islike = false;
 
 
     public Word(String english, String chinese) {
@@ -80,6 +81,14 @@ public class Word {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public boolean isIslike() {
+        return islike;
+    }
+
+    public void setIslike(boolean islike) {
+        this.islike = islike;
     }
 }
 

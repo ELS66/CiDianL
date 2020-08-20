@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -15,14 +14,9 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.concurrent.ExecutionException;
+public class BlankAdapter extends ListAdapter<Word, BlankAdapter.BlankViewHolder> {
 
-public class MyAdapter extends ListAdapter<Word,MyAdapter.MyViewHolder> {
-
-    WordRepository wordRepository = new WordRepository(MyApplication.getContext());
-    boolean islike = false;
-
-    protected MyAdapter() {
+    protected BlankAdapter() {
         super(new DiffUtil.ItemCallback<Word>() {
             @Override
             public boolean areItemsTheSame(@NonNull Word oldItem, @NonNull Word newItem) {
@@ -31,23 +25,23 @@ public class MyAdapter extends ListAdapter<Word,MyAdapter.MyViewHolder> {
 
             @Override
             public boolean areContentsTheSame(@NonNull Word oldItem, @NonNull Word newItem) {
-                return (oldItem.getEnglish().equals(newItem.getEnglish()) && oldItem.getChinese().equals(newItem.getChinese()) && oldItem.isIslike() == newItem.isIslike());
+                return (oldItem.getEnglish().equals(newItem.getEnglish()) && oldItem.getChinese().equals(newItem.getChinese()));
             }
         });
     }
 
     @Override
-    public void onViewAttachedToWindow(@NonNull MyViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull BlankViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         holder.textViewNumber.setText(String.valueOf(holder.getAdapterPosition() + 1));
     }
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BlankViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View itemView = layoutInflater.inflate(R.layout.item_card,parent,false);
-        final MyViewHolder holder =new MyViewHolder(itemView);
+        final BlankViewHolder holder = new BlankViewHolder(itemView);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,60 +57,22 @@ public class MyAdapter extends ListAdapter<Word,MyAdapter.MyViewHolder> {
                 }
             }
         });
-
-        holder.toggleButtonlove.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                Word word = null;
-                String english = holder.textViewEnglish.getText().toString();
-                try {
-                    word = wordRepository.getselectWord(english);
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (buttonView.isChecked()){
-
-                    if (word != null) {
-                        word.setIslike(true);
-                    }
-                    try {
-                        wordRepository.getnewWord(word);
-                    } catch (ExecutionException | InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-
-                    if (word != null) {
-                        word.setIslike(false);
-                    }
-                    try {
-                        wordRepository.getnewWord(word);
-                    } catch (ExecutionException | InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-        });
-
-        return new MyViewHolder(itemView);
+        return new BlankViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BlankViewHolder holder, int position) {
         final Word word = getItem(position);
         holder.textViewNumber.setText(String.valueOf(position + 1));
         holder.textViewEnglish.setText(word.getEnglish());
         holder.textViewChinese.setText(word.getChinese());
-        holder.toggleButtonlove.setChecked(word.isIslike());
+        holder.toggleButtonlove.setVisibility(View.INVISIBLE);
     }
 
-    static class MyViewHolder extends  RecyclerView.ViewHolder {
+    static class BlankViewHolder extends RecyclerView.ViewHolder{
         TextView textViewNumber,textViewEnglish,textViewChinese;
         ToggleButton toggleButtonlove;
-        public MyViewHolder (@NonNull View itemView) {
+        public BlankViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewNumber = itemView.findViewById(R.id.textViewNumber);
             textViewEnglish = itemView.findViewById(R.id.textViewEnglish);
@@ -124,5 +80,4 @@ public class MyAdapter extends ListAdapter<Word,MyAdapter.MyViewHolder> {
             toggleButtonlove = itemView.findViewById(R.id.toggleButtonlove);
         }
     }
-
 }

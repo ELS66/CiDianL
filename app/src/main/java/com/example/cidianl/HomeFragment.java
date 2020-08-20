@@ -66,7 +66,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         myViewModel = new ViewModelProvider(this).get(MyViewModel.class);
         recyclerView = requireActivity().findViewById(R.id.recyclerView1);
         myAdapter = new MyAdapter();

@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MyViewModel extends AndroidViewModel {
 
@@ -24,7 +25,16 @@ public class MyViewModel extends AndroidViewModel {
     LiveData<List<Word>> findWordWithPattern(String pattern) {
         return wordRepository.findWordWithPattern(pattern);
     }
-    Word getselectWord (String selectWord) {
+    LiveData<List<Word>> getlikeWord() {
+        return wordRepository.getlikeWord();
+    }
+    List<Word> getOtherWords(String studyWord) throws ExecutionException, InterruptedException {
+        return wordRepository.getOtherWord(studyWord);
+    }
+    Word getStudyWord() throws ExecutionException, InterruptedException {
+        return wordRepository.getStudyWord();
+    }
+    Word getselectWord (String selectWord) throws ExecutionException, InterruptedException {
         return wordRepository.getselectWord(selectWord);
     }
 
@@ -33,5 +43,8 @@ public class MyViewModel extends AndroidViewModel {
     }
     void deleteWords(Word... words) {
         wordRepository.deleteWords(words);
+    }
+    void getnewWord(Word word) throws ExecutionException, InterruptedException {
+        wordRepository.getnewWord(word);
     }
 }

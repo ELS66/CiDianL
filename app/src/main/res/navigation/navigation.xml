@@ -15,6 +15,18 @@
         tools:layout="@layout/blank_fragment" />
     <fragment
         android:id="@+id/item_study"
+        android:name="com.example.cidianl.StudyHomeFragment"
+        tools:layout="@layout/study_fragment" >
+        <action
+            android:id="@+id/action_item_study_to_studyFragment2"
+            app:destination="@id/studyFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/studyFragment2"
         android:name="com.example.cidianl.StudyFragment"
-        tools:layout="@layout/study_fragment" />
+        tools:layout="@layout/study_fragment">
+        <action
+            android:id="@+id/action_studyFragment2_to_item_study"
+            app:destination="@id/item_study" />
+    </fragment>
 </navigation>

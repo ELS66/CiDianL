@@ -64,7 +64,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this,R.id.fragment);
+        return navController.navigateUp();
+    }
 
     /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {

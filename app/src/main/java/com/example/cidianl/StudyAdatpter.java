@@ -3,6 +3,7 @@ package com.example.cidianl;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -52,16 +53,17 @@ public class StudyAdatpter extends ListAdapter<Word,StudyAdatpter.StudyViewHolde
     public void onBindViewHolder(@NonNull StudyViewHolder holder, int position) {
         final Word word = getItem(position);
         holder.textViewEnglish.setText(word.getEnglish());
-        //holder.textViewChinese.setText(word.getChinese());
+        holder.textViewChinese.setText(word.getChinese());
     }
 
     static class StudyViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewEnglish,textViewChinese;
+        Button button;
         public StudyViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewEnglish = itemView.findViewById(R.id.textViewEnglishWord);
-            //textViewChinese = itemView.findViewById(R.id.textViewChineseWord);
+            textViewEnglish = itemView.findViewById(R.id.textViewEnglish);
+            textViewChinese = itemView.findViewById(R.id.textViewChinese);
         }
     }
 }

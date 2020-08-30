@@ -1,12 +1,13 @@
 package com.example.cidianl;
 
-import android.content.DialogInterface;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -21,17 +22,21 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -49,6 +54,14 @@ public class HomeFragment extends Fragment {
     private List<Word> allwords;
     private LiveData<List<Word>> findWords;
     private RecyclerView recyclerView;
+    private List<TabFragment> tabFragmentList = new ArrayList<>();
+    private ViewPager2 viewPager2;
+    private TabLayout tabLayout;
+    private TabLayoutMediator mediator;
+    private LiveData<List<String>> listLiveDataDic;
+    DictionarySave dictionarySave;
+    Context mContext;
+
     MainActivity mainActivity = (MainActivity) getActivity();
 
     public static HomeFragment newInstance() {
@@ -60,82 +73,53 @@ public class HomeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.home_fragment, container, false);
         setHasOptionsMenu(true);
+        mContext = getActivity().getApplicationContext();
+        myViewModel = new ViewModelProvider(this).get(MyViewModel.class);
+        dictionarySave = new DictionarySave(mContext,"DICTIONARY");
+        myViewModel.getAllDictionary().setValue(dictionarySave.load("DICTIONARY"));
+
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        myViewModel = new ViewModelProvider(this).get(MyViewModel.class);
-        recyclerView = requireActivity().findViewById(R.id.recyclerView1);
-        myAdapter = new MyAdapter();
-        recyclerView.setAdapter(myAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator() {
+
+        tabLayout = requireActivity().findViewById(R.id.tabLayout);
+        for (int i = 0;i < myViewModel.getAllDictionary().getValue().size();i++) {
+            tabLayout.addTab(tabLayout.newTab().setText(myViewModel.getAllDictionary().getValue().get(i)));
+            tabFragmentList.add(TabFragment.newInstance(myViewModel.getAllDictionary().getValue().get(i)));
+        }
+        viewPager2 = requireActivity().findViewById(R.id.viewpage2);
+        viewPager2.setOffscreenPageLimit(ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT);
+        viewPager2.setAdapter(new FragmentStateAdapter(getChildFragmentManager(),getLifecycle()) {
+            @NonNull
             @Override
-            public void onAnimationFinished(@NonNull RecyclerView.ViewHolder viewHolder) {
-                super.onAnimationFinished(viewHolder);
-                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                if (linearLayoutManager != null) {
-                    int firstPosition = linearLayoutManager.findFirstVisibleItemPosition();
-                    int lastPosition = linearLayoutManager.findLastVisibleItemPosition();
-                    for (int i = firstPosition ; i<lastPosition;i++) {
-                        MyAdapter.MyViewHolder holder = (MyAdapter.MyViewHolder) recyclerView.findViewHolderForLayoutPosition(i);
-                        if (holder != null){
-                            holder.textViewNumber.setText(String.valueOf(i+1));
-                        }
-                    }
-                }
+            public Fragment createFragment(int position) {
+                return TabFragment.newInstance(myViewModel.getAllDictionary().getValue().get(position));
+            }
+
+            @Override
+            public int getItemCount() {
+                return myViewModel.getAllDictionary().getValue().size();
             }
         });
-
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.START | ItemTouchHelper.END) {
+        viewPager2.registerOnPageChangeCallback(changeCallback);
+        mediator = new TabLayoutMediator(tabLayout, viewPager2, true,new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                TextView tabView = new TextView(getActivity());
+                tabView.setText(myViewModel.getAllDictionary().getValue().get(position));
+                tabView.setTextSize(14);
+                tab.setCustomView(tabView);
             }
+        });
+        mediator.attach();
 
+        listLiveDataDic = myViewModel.getAllDictionary();
+        listLiveDataDic.observe(getViewLifecycleOwner(), new Observer<List<String>>() {
             @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                final Word wordDelete = allwords.get(viewHolder.getAdapterPosition());
-                String fileName = wordDelete.getEnglish();
-                myViewModel.deleteWords(wordDelete);
-                AlertDialog.Builder dialog = new AlertDialog.Builder(requireActivity());
-                dialog.setTitle("警告");
-                dialog.setMessage("你确定要删除吗？");
-                dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        myViewModel.insertWords(wordDelete);
-                    }
-                });
-                dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/2/"+fileName+".mp3";
-                        if (deleteFile(path)){
-                            Toast.makeText(requireActivity(),"删除成功",Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(requireActivity(),"删除失败",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                dialog.show();
-            }
-        }).attachToRecyclerView(recyclerView);
-
-        findWords = myViewModel.getListLiveData();
-        findWords.observe(getViewLifecycleOwner(), new Observer<List<Word>>() {
-            @Override
-            public void onChanged(List<Word> words) {
-                int temp = myAdapter.getItemCount();
-                allwords = words;
-                if (temp != words.size()){
-                    if (temp < words.size()){
-                        recyclerView.smoothScrollBy(0,-200);
-                    }
-                    myAdapter.submitList(words);
-                }
+            public void onChanged(List<String> strings) {
             }
         });
 
@@ -147,6 +131,30 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+    private ViewPager2.OnPageChangeCallback changeCallback = new ViewPager2.OnPageChangeCallback() {
+        @Override
+        public void onPageSelected(int position) {
+            int tabCount = tabLayout.getTabCount();
+            for (int i =0; i<tabCount;i++) {
+                TabLayout.Tab tab = tabLayout.getTabAt(i);
+                TextView tabView = null;
+                if (tab != null) {
+                    tabView = (TextView) tab.getCustomView();
+                }
+                if (tab != null) {
+                    if (tab.getPosition() == position) {
+                        assert tabView != null;
+                        myViewModel.whatDictionary = tabView.getText().toString();
+                        tabView.setTextSize(20);
+                    } else {
+                        assert tabView != null;
+                        tabView.setTextSize(14);
+                    }
+                }
+            }
+        }
+    };
 
     private void showeditTextDialog() {
         final View dialogView = LayoutInflater.from(requireActivity()).inflate(R.layout.edit_dialog,null);
@@ -173,7 +181,7 @@ public class HomeFragment extends Fragment {
                 if (x1.length() == 0  || x2.length() == 0){
                     Toast.makeText(requireContext(),"请输入单词",Toast.LENGTH_SHORT).show();
                 }else {
-                    Word word = new Word(x2,x1);
+                    Word word = new Word(x2,x1,myViewModel.whatDictionary);
                     myViewModel.insertWords(word);
                     Toast.makeText(requireContext(),"添加成功",Toast.LENGTH_SHORT).show();
                     downloadFile(x2);
@@ -189,7 +197,7 @@ public class HomeFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.toolbar,menu);
         android.widget.SearchView searchView = (SearchView)menu.findItem(R.id.item_search).getActionView();
-
+        MenuItem menuItemadd = menu.findItem(R.id.item_add);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -215,8 +223,17 @@ public class HomeFragment extends Fragment {
                 return true;
             }
 
+        });
+        menuItemadd.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
+            EditText editTextadd;
 
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                NavController navController = Navigation.findNavController(requireActivity(),R.id.fragment);
+                navController.navigate(R.id.action_item_home_to_addFragment);
+                return false;
+            }
         });
        super.onCreateOptionsMenu(menu,inflater);
     }
@@ -279,6 +296,14 @@ public class HomeFragment extends Fragment {
         }
         return false;
     }
+
+    @Override
+    public void onDestroy() {
+        mediator.detach();
+        viewPager2.unregisterOnPageChangeCallback(changeCallback);
+        super.onDestroy();
+    }
+
 
 }
 

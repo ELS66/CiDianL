@@ -16,8 +16,8 @@ public interface WordDao {
     @Delete
     void deleteWords(Word... words);
 
-    @Query("SELECT * FROM WORD ORDER BY UID DESC")
-    LiveData<List<Word>> getAllWords();
+    @Query("SELECT * FROM Word WHERE dictionary = :dictionary ORDER BY UID DESC")
+    LiveData<List<Word>> getListWords(String dictionary);
 
     @Query("SELECT * FROM Word WHERE english  LIKE :pattern  ORDER BY UID DESC")
     LiveData<List<Word>> findWordWithPattern(String pattern);
@@ -28,12 +28,23 @@ public interface WordDao {
     @Query("SELECT * FROM Word WHERE isstudy = 1 ORDER BY studyend ASC , studystart DESC LIMIT 1")
     Word getStudyWord();
 
+    @Query("SELECT * FROM Word WHERE dictionary = :dictionary ORDER BY UID DESC")
+    List<Word> getAllWordDictionary(String dictionary);
+
     @Query(("SELECT * FROM word WHERE english != :studyword ORDER BY RANDOM() LIMIT 3"))
     List<Word> getOtherWord(String studyword);
+
+    @Query("SELECT * FROM WORD ORDER BY UID DESC")
+    List<Word> getAllWords();
 
     @Update
     void getNewWord(Word...words);
 
     @Query("SELECT * FROM Word WHERE islike = 1 ORDER BY UID DESC")
     LiveData<List<Word>> getlikeWord();
+
+    @Query("SELECT * FROM Word ORDER BY RANDOM() LIMIT 6")
+    List<Word> getPipeiWord();
+
+
 }

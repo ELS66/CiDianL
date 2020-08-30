@@ -4,14 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:clipChildren="false"
     tools:context=".StudyHomeFragment">
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/ic_baseline_menu_book_24" />
 
     <View
         android:id="@+id/view5"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/colorPrimary" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPage"
@@ -21,5 +30,27 @@
         android:layout_marginRight="80dp"
         android:clipChildren="false"
         android:clipToPadding="false" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/ic_baseline_menu_book_24" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="Button" />
 
 </FrameLayout>

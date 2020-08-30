@@ -7,12 +7,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
-public class Word  {
+public class Word {
     @PrimaryKey(autoGenerate = true)
     private int uid;
 
     private String english;
     private String chinese;
+    private String dictionary;
     private int studystart = 0;
     private int studyend = 0;
     private boolean isstudy = true;
@@ -20,10 +21,11 @@ public class Word  {
     private boolean islike = false;
 
 
-    public Word(String english, String chinese) {
+    public Word(String english, String chinese, String dictionary) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         this.english = english;
         this.chinese = chinese;
+        this.dictionary = dictionary;
         date = format.format(new Date());
     }
 
@@ -89,6 +91,14 @@ public class Word  {
 
     public void setIslike(boolean islike) {
         this.islike = islike;
+    }
+
+    public String getDictionary() {
+        return dictionary;
+    }
+
+    public void setDictionary(String dictionary) {
+        this.dictionary = dictionary;
     }
 }
 

@@ -18,8 +18,8 @@ public class WordRepository {
         //listLiveData = wordDao.getAllWords();
     }
 
-    LiveData<List<Word>> getListLiveData() {
-        return wordDao.getAllWords();
+    LiveData<List<Word>> getListLiveData(String dictionary) {
+        return wordDao.getListWords(dictionary);
     }
     LiveData<List<Word>> findWordWithPattern(String pattern) {
         return wordDao.findWordWithPattern("%" + pattern  + "%");
@@ -28,8 +28,19 @@ public class WordRepository {
         return wordDao.getlikeWord();
     }
 
+    List<Word> getAllWordDictionary(String dictionary) throws ExecutionException,InterruptedException {
+        return new getAllWordDictionaryAsyncTask(wordDao).execute(dictionary).get();
+    }
+
     List<Word> getOtherWord (String studyWord) throws ExecutionException,InterruptedException {
         return new getOtherWordAsyncTask(wordDao).execute(studyWord).get();
+    }
+
+    List<Word> getPipeiWord () throws ExecutionException,InterruptedException{
+        return new getPipeiWordAsyncTask(wordDao).execute().get();
+    }
+    List<Word> getAllWords () throws ExecutionException,InterruptedException {
+        return  new getAllWordAsyncTask(wordDao).execute().get();
     }
 
     Word getStudyWord () throws ExecutionException,InterruptedException{
@@ -82,6 +93,15 @@ public class WordRepository {
             return null;
         }
     }
+    static class getAllWordDictionaryAsyncTask extends AsyncTask<String, Void, List<Word>> {
+        private WordDao wordDao;
+        getAllWordDictionaryAsyncTask(WordDao wordDao){this.wordDao = wordDao;}
+
+        @Override
+        protected List<Word> doInBackground(String... strings) {
+            return wordDao.getAllWordDictionary(strings[0]);
+        }
+    }
     static class getSelectWordAsyncTask extends AsyncTask<String, Void, Word> {
         private WordDao wordDao;
 
@@ -131,6 +151,29 @@ public class WordRepository {
         protected Void doInBackground(Word... words) {
             wordDao.getNewWord(words);
             return null;
+        }
+    }
+
+    static class getPipeiWordAsyncTask extends AsyncTask<Void,Void,List<Word>> {
+        private WordDao wordDao;
+
+        getPipeiWordAsyncTask(WordDao wordDao) {this.wordDao = wordDao;}
+
+
+        @Override
+        protected List<Word> doInBackground(Void... voids) {
+            return wordDao.getPipeiWord();
+        }
+    }
+    static class getAllWordAsyncTask extends AsyncTask<Void,Void,List<Word>> {
+        private WordDao wordDao;
+
+        getAllWordAsyncTask(WordDao wordDao) {this.wordDao = wordDao;}
+
+
+        @Override
+        protected List<Word> doInBackground(Void... voids) {
+            return wordDao.getAllWords();
         }
     }
 }

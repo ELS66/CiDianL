@@ -8,7 +8,12 @@
     <fragment
         android:id="@+id/item_home"
         android:name="com.example.cidianl.HomeFragment"
-        tools:layout="@layout/home_fragment" />
+        android:label="L词典"
+        tools:layout="@layout/home_fragment">
+        <action
+            android:id="@+id/action_item_home_to_addFragment"
+            app:destination="@id/addFragment" />
+    </fragment>
     <fragment
         android:id="@+id/item_blank"
         android:name="com.example.cidianl.BlankFragment"
@@ -20,6 +25,9 @@
         <action
             android:id="@+id/action_item_study_to_studyFragment2"
             app:destination="@id/studyFragment2" />
+        <action
+            android:id="@+id/action_item_study_to_pipeiFragment"
+            app:destination="@id/pipeiFragment" />
     </fragment>
     <fragment
         android:id="@+id/studyFragment2"
@@ -29,4 +37,17 @@
             android:id="@+id/action_studyFragment2_to_item_study"
             app:destination="@id/item_study" />
     </fragment>
+    <fragment
+        android:id="@+id/pipeiFragment"
+        android:name="com.example.cidianl.PipeiFragment"
+        tools:layout="@layout/fragment_pipei" >
+        <action
+            android:id="@+id/action_pipeiFragment_to_item_study"
+            app:destination="@id/item_study" />
+    </fragment>
+    <fragment
+        android:id="@+id/addFragment"
+        android:name="com.example.cidianl.AddFragment"
+        android:label="管理词典"
+        tools:layout="@layout/fragment_add" />
 </navigation>

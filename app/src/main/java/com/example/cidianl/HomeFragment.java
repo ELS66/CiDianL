@@ -76,15 +76,21 @@ public class HomeFragment extends Fragment {
         mContext = getActivity().getApplicationContext();
         myViewModel = new ViewModelProvider(this).get(MyViewModel.class);
         dictionarySave = new DictionarySave(mContext,"DICTIONARY");
-        myViewModel.getAllDictionary().setValue(dictionarySave.load("DICTIONARY"));
-
+        if (dictionarySave.load("DICTIONARY").size() == 0) {
+            List<String> newlist = new ArrayList<>();
+            newlist.add("我的");
+            myViewModel.getAllDictionary().setValue(newlist);
+        } else {
+            myViewModel.getAllDictionary().setValue(dictionarySave.load("DICTIONARY"));
+        }
+        myAdapter = new MyAdapter();
+        //myAdapter.submitList();
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         tabLayout = requireActivity().findViewById(R.id.tabLayout);
         for (int i = 0;i < myViewModel.getAllDictionary().getValue().size();i++) {
             tabLayout.addTab(tabLayout.newTab().setText(myViewModel.getAllDictionary().getValue().get(i)));
@@ -194,10 +200,11 @@ public class HomeFragment extends Fragment {
 
 
 
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.toolbar,menu);
         android.widget.SearchView searchView = (SearchView)menu.findItem(R.id.item_search).getActionView();
         MenuItem menuItemadd = menu.findItem(R.id.item_add);
+        MenuItem menuItemshare = menu.findItem(R.id.item_share);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -207,14 +214,12 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 String pattern = newText.trim();
-                findWords.removeObservers(getViewLifecycleOwner());
                 findWords = myViewModel.findWordWithPattern(pattern);
                 findWords.removeObservers(getViewLifecycleOwner());
                 findWords.observe(getViewLifecycleOwner(), new Observer<List<Word>>() {
                     @Override
                     public void onChanged(List<Word> words) {
                         int temp  = myAdapter.getItemCount();
-                        allwords = words;
                         if (temp != words.size()) {
                             myAdapter.submitList(words);
                         }
@@ -232,6 +237,14 @@ public class HomeFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 NavController navController = Navigation.findNavController(requireActivity(),R.id.fragment);
                 navController.navigate(R.id.action_item_home_to_addFragment);
+                return false;
+            }
+        });
+        menuItemshare.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                NavController navController = Navigation.findNavController(requireActivity(),R.id.fragment);
+                navController.navigate(R.id.action_item_home_to_shareFragment);
                 return false;
             }
         });

@@ -16,4 +16,7 @@
         android:id="@+id/item_add"
         android:icon="@drawable/ic_baseline_library_add_24"
         android:title="管理词典" />
+    <item
+        android:id="@+id/item_share"
+        android:title="导入导出" />
 </menu>

@@ -102,7 +102,7 @@ public class StudyHomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    allWord = myViewModel.getAllWord();
+                    allWord = myViewModel.getAllWordDictionary("1");
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }

@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_item_home_to_addFragment"
             app:destination="@id/addFragment" />
+        <action
+            android:id="@+id/action_item_home_to_shareFragment"
+            app:destination="@id/shareFragment" />
     </fragment>
     <fragment
         android:id="@+id/item_blank"
@@ -50,4 +53,8 @@
         android:name="com.example.cidianl.AddFragment"
         android:label="管理词典"
         tools:layout="@layout/fragment_add" />
+    <fragment
+        android:id="@+id/shareFragment"
+        android:name="com.example.cidianl.ShareFragment"
+        tools:layout="@layout/fragment_share" />
 </navigation>

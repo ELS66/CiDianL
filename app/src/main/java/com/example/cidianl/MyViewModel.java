@@ -107,6 +107,10 @@ public class MyViewModel extends AndroidViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
+        onSave();
+    }
+
+    public void onSave() {
         dictionarySave.save("DICTIONARY",this.getAllDictionary().getValue());
     }
 }

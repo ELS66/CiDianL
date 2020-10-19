@@ -210,7 +210,7 @@ public class PipeiFragment extends Fragment {
                 long diff = end.getTime() - myViewModel.start.getTime();
                 long seconds = (diff % (1000 * 60)) / 1000 ;
                 long mseconds = diff % 100;
-                textView.setText(String.valueOf(seconds)+ ":" + String.valueOf(mseconds));
+                textView.setText(seconds + ":" + mseconds);
             }
             if (msg.what == 0x0526) {
                 timer1.cancel();

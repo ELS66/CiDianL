@@ -2,7 +2,6 @@ package com.example.cidianl;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,17 +33,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class HomeFragment extends Fragment {
 
@@ -59,6 +50,7 @@ public class HomeFragment extends Fragment {
     private TabLayout tabLayout;
     private TabLayoutMediator mediator;
     private LiveData<List<String>> listLiveDataDic;
+    private ImageButton imageButtondicadd;
     DictionarySave dictionarySave;
     Context mContext;
 
@@ -96,6 +88,14 @@ public class HomeFragment extends Fragment {
             tabLayout.addTab(tabLayout.newTab().setText(myViewModel.getAllDictionary().getValue().get(i)));
             tabFragmentList.add(TabFragment.newInstance(myViewModel.getAllDictionary().getValue().get(i)));
         }
+        imageButtondicadd = requireActivity().findViewById(R.id.imageButtondicadd);
+        imageButtondicadd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(requireActivity(),R.id.fragment);
+                navController.navigate(R.id.action_item_home_to_addFragment);
+            }
+        });
         viewPager2 = requireActivity().findViewById(R.id.viewpage2);
         viewPager2.setOffscreenPageLimit(ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT);
         viewPager2.setAdapter(new FragmentStateAdapter(getChildFragmentManager(),getLifecycle()) {
@@ -182,6 +182,7 @@ public class HomeFragment extends Fragment {
         editChinese.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                DownloadFile downloadFile = new DownloadFile();
                 String x1 = editChinese.getText().toString();
                 String x2 = editEnglish.getText().toString();
                 if (x1.length() == 0  || x2.length() == 0){
@@ -190,7 +191,7 @@ public class HomeFragment extends Fragment {
                     Word word = new Word(x2,x1,myViewModel.whatDictionary);
                     myViewModel.insertWords(word);
                     Toast.makeText(requireContext(),"添加成功",Toast.LENGTH_SHORT).show();
-                    downloadFile(x2);
+                    downloadFile.download(x2);
                     editTextDialog.dismiss();
                 }
                 return true;
@@ -251,56 +252,6 @@ public class HomeFragment extends Fragment {
        super.onCreateOptionsMenu(menu,inflater);
     }
 
-    public void downloadFile(String x1) {
-        final String url = "http://dict.youdao.com/dictvoice?audio=" + x1 ;
-        final long startTime = System.currentTimeMillis();
-        OkHttpClient okHttpClient = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(url)
-                .addHeader("Connection", "close")
-                .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                InputStream is = null;
-                byte[] buf = new byte[2048];
-                int len = 0;
-                FileOutputStream fos = null;
-
-                String savePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/2";
-                try {
-                    is = response.body().byteStream();
-                    long total = response.body().contentLength();
-                    File file = new File(savePath, x1+ ".mp3");
-                    fos = new FileOutputStream(file);
-                    long sum = 0;
-                    while ((len = is.read(buf)) != -1) {
-                        fos.write(buf, 0, len);
-                        sum += len;
-                        int progress = (int) (sum * 1.0f / total * 100);
-                    }
-                    fos.flush();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        if (is != null)
-                            is.close();
-                    } catch (IOException e) {
-                    }
-                    try {
-                        if (fos != null)
-                            fos.close();
-                    } catch (IOException e) {
-                    }
-                }
-            }
-        });
-    }
 
     public boolean deleteFile(String filePath) {
         File file = new File(filePath);

@@ -307,9 +307,9 @@ public class StudyFragment extends Fragment {
             e.printStackTrace();
         }
         if (day >= 1) {
-            time = String.valueOf(day) + "天前";
+            time = day + "天前";
         } else {
-            time = String.valueOf(hour) + "小时前";
+            time = hour + "小时前";
         }
         return time;
     }

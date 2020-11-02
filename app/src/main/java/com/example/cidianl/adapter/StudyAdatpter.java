@@ -1,4 +1,4 @@
-package com.example.cidianl;
+package com.example.cidianl.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +11,13 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class StudyAdatpter extends ListAdapter<Word,StudyAdatpter.StudyViewHolder> {
+import com.example.cidianl.R;
+import com.example.cidianl.bean.Word;
+
+public class StudyAdatpter extends ListAdapter<Word, StudyAdatpter.StudyViewHolder> {
 
 
-    protected StudyAdatpter() {
+    public StudyAdatpter() {
         super(new DiffUtil.ItemCallback<Word>() {
             @Override
             public boolean areItemsTheSame(@NonNull Word oldItem, @NonNull Word newItem) {

@@ -1,4 +1,4 @@
-package com.example.cidianl;
+package com.example.cidianl.adapter;
 
 import android.media.MediaPlayer;
 import android.util.Log;
@@ -15,6 +15,12 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cidianl.R;
+import com.example.cidianl.bean.Word;
+import com.example.cidianl.config.MyApplication;
+import com.example.cidianl.db.WordRepository;
+import com.example.cidianl.utils.DownloadFile;
+
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 
@@ -23,7 +29,7 @@ public class MyAdapter extends ListAdapter<Word,MyAdapter.MyViewHolder> {
     WordRepository wordRepository = new WordRepository(MyApplication.getContext());
     boolean islike = false;
 
-    protected MyAdapter() {
+    public MyAdapter() {
         super(new DiffUtil.ItemCallback<Word>() {
             @Override
             public boolean areItemsTheSame(@NonNull Word oldItem, @NonNull Word newItem) {
@@ -143,11 +149,14 @@ public class MyAdapter extends ListAdapter<Word,MyAdapter.MyViewHolder> {
 
     }
 
-    static class MyViewHolder extends  RecyclerView.ViewHolder {
-        TextView textViewNumber,textViewEnglish,textViewChinese;
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView textViewNumber;
+        TextView textViewEnglish;
+        TextView textViewChinese;
         ToggleButton toggleButtonlove;
         ImageButton imageButtonDownload;
-        public MyViewHolder (@NonNull View itemView) {
+
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewNumber = itemView.findViewById(R.id.textViewNumber);
             textViewEnglish = itemView.findViewById(R.id.textViewEnglish);

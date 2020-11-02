@@ -1,4 +1,4 @@
-package com.example.cidianl;
+package com.example.cidianl.config;
 
 import android.annotation.SuppressLint;
 import android.app.Application;

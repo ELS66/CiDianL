@@ -1,4 +1,4 @@
-package com.example.cidianl;
+package com.example.cidianl.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -20,6 +20,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.cidianl.R;
+import com.example.cidianl.adapter.MyAdapter;
+import com.example.cidianl.bean.Word;
+import com.example.cidianl.model.MyViewModel;
 
 import java.io.File;
 import java.io.FileOutputStream;

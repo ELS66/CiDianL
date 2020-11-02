@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/item_home"
-        android:name="com.example.cidianl.HomeFragment"
+        android:name="com.example.cidianl.ui.HomeFragment"
         android:label="L词典"
         tools:layout="@layout/home_fragment">
         <action
@@ -19,11 +19,11 @@
     </fragment>
     <fragment
         android:id="@+id/item_blank"
-        android:name="com.example.cidianl.BlankFragment"
+        android:name="com.example.cidianl.ui.BlankFragment"
         tools:layout="@layout/blank_fragment" />
     <fragment
         android:id="@+id/item_study"
-        android:name="com.example.cidianl.StudyHomeFragment"
+        android:name="com.example.cidianl.ui.StudyHomeFragment"
         tools:layout="@layout/study_fragment" >
         <action
             android:id="@+id/action_item_study_to_studyFragment2"
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/studyFragment2"
-        android:name="com.example.cidianl.StudyFragment"
+        android:name="com.example.cidianl.ui.StudyFragment"
         tools:layout="@layout/study_fragment">
         <action
             android:id="@+id/action_studyFragment2_to_item_study"
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/pipeiFragment"
-        android:name="com.example.cidianl.PipeiFragment"
+        android:name="com.example.cidianl.ui.PipeiFragment"
         tools:layout="@layout/fragment_pipei" >
         <action
             android:id="@+id/action_pipeiFragment_to_item_study"
@@ -50,11 +50,11 @@
     </fragment>
     <fragment
         android:id="@+id/addFragment"
-        android:name="com.example.cidianl.AddFragment"
+        android:name="com.example.cidianl.ui.AddFragment"
         android:label="管理词典"
         tools:layout="@layout/fragment_add" />
     <fragment
         android:id="@+id/shareFragment"
-        android:name="com.example.cidianl.ShareFragment"
+        android:name="com.example.cidianl.ui.ShareFragment"
         tools:layout="@layout/fragment_share" />
 </navigation>

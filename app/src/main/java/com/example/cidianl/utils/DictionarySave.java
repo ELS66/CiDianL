@@ -1,4 +1,4 @@
-package com.example.cidianl;
+package com.example.cidianl.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -1,4 +1,4 @@
-package com.example.cidianl;
+package com.example.cidianl.model;
 
 import android.app.Application;
 
@@ -7,6 +7,10 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
+
+import com.example.cidianl.bean.Word;
+import com.example.cidianl.db.WordRepository;
+import com.example.cidianl.utils.DictionarySave;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,51 +62,64 @@ public class MyViewModel extends AndroidViewModel {
         yesnumber.setValue(yesnumber.getValue() + 1);
     }
 
-    LiveData<List<Word>> getListLiveData(String dictionary) {
-        return wordRepository.getListLiveData(dictionary);
-    }
-    LiveData<List<Word>> findWordWithPattern(String pattern) {
-        return wordRepository.findWordWithPattern(pattern);
-    }
-    LiveData<List<Word>> getlikeWord() {
-        return wordRepository.getlikeWord();
-    }
-    List<Word> getAllWordDictionary (String dictionary) throws ExecutionException,InterruptedException {
-        return wordRepository.getAllWordDictionary(dictionary);
-    }
-    List<Word> getOtherWords(String studyWord) throws ExecutionException, InterruptedException {
-        return wordRepository.getOtherWord(studyWord);
-    }
-    List<Word> getPipeiWord() throws ExecutionException,InterruptedException {
-        return wordRepository.getPipeiWord();
-    }
+    public int x1 = 0;
+    public int b1 = 0;
+    public int i1 = 0;
+    public int i2 = 0;
+    public int i3 = 0;
+    public int numno = 0;
+
     List<Word> getAllWord() throws ExecutionException, InterruptedException {
         return wordRepository.getAllWords();
     }
-    Word getStudyWord() throws ExecutionException, InterruptedException {
-        return wordRepository.getStudyWord();
-    }
-    Word getselectWord (String selectWord) throws ExecutionException, InterruptedException {
+
+    public Date start = null;
+
+    Word getselectWord(String selectWord) throws ExecutionException, InterruptedException {
         return wordRepository.getselectWord(selectWord);
     }
 
-    void insertWords(Word... words) {
+    public String whatDictionary = "我的";
+
+    public LiveData<List<Word>> getListLiveData(String dictionary) {
+        return wordRepository.getListLiveData(dictionary);
+    }
+
+    public LiveData<List<Word>> findWordWithPattern(String pattern) {
+        return wordRepository.findWordWithPattern(pattern);
+    }
+
+    public LiveData<List<Word>> getlikeWord() {
+        return wordRepository.getlikeWord();
+    }
+
+    public List<Word> getAllWordDictionary(String dictionary) throws ExecutionException, InterruptedException {
+        return wordRepository.getAllWordDictionary(dictionary);
+    }
+
+    public List<Word> getOtherWords(String studyWord) throws ExecutionException, InterruptedException {
+        return wordRepository.getOtherWord(studyWord);
+    }
+
+    public List<Word> getPipeiWord() throws ExecutionException, InterruptedException {
+        return wordRepository.getPipeiWord();
+    }
+
+    public Word getStudyWord() throws ExecutionException, InterruptedException {
+        return wordRepository.getStudyWord();
+    }
+
+    public void insertWords(Word... words) {
         wordRepository.insertWords(words);
     }
-    void deleteWords(Word... words) {
+
+    public void deleteWords(Word... words) {
         wordRepository.deleteWords(words);
     }
-    void getnewWord(Word word) throws ExecutionException, InterruptedException {
+
+    public void getnewWord(Word word) throws ExecutionException, InterruptedException {
         wordRepository.getnewWord(word);
     }
-    int x1 = 0;
-    int b1 = 0;
-    int i1 = 0;
-    int i2 = 0;
-    int i3 = 0;
-    int numno = 0;
-    Date start = null;
-    String whatDictionary = "我的";
 
     @Override
     protected void onCleared() {

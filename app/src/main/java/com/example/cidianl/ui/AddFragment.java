@@ -1,4 +1,4 @@
-package com.example.cidianl;
+package com.example.cidianl.ui;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -23,6 +23,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.cidianl.R;
+import com.example.cidianl.bean.Word;
+import com.example.cidianl.db.WordRepository;
+import com.example.cidianl.model.MyViewModel;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;

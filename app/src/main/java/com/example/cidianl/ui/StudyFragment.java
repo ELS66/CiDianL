@@ -1,4 +1,4 @@
-package com.example.cidianl;
+package com.example.cidianl.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -18,6 +18,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.cidianl.R;
+import com.example.cidianl.bean.Word;
+import com.example.cidianl.model.MyViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;

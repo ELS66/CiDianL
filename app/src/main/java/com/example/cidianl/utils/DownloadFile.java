@@ -1,4 +1,6 @@
-package com.example.cidianl;
+package com.example.cidianl.utils;
+
+import com.example.cidianl.config.MyApplication;
 
 import java.io.File;
 import java.io.FileOutputStream;

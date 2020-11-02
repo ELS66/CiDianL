@@ -1,9 +1,11 @@
-package com.example.cidianl;
+package com.example.cidianl.db;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+
+import com.example.cidianl.bean.Word;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -12,56 +14,58 @@ public class WordRepository {
     private LiveData<List<Word>>listLiveData;
     private WordDao wordDao;
 
-    WordRepository(Context context) {
+    public WordRepository(Context context) {
         WordDatabase wordDatabase = WordDatabase.getDatabase(context.getApplicationContext());
         wordDao = wordDatabase.getWordDao();
         //listLiveData = wordDao.getAllWords();
     }
 
-    LiveData<List<Word>> getListLiveData(String dictionary) {
+    public LiveData<List<Word>> getListLiveData(String dictionary) {
         return wordDao.getListWords(dictionary);
     }
-    LiveData<List<Word>> findWordWithPattern(String pattern) {
-        return wordDao.findWordWithPattern("%" + pattern  + "%");
+
+    public LiveData<List<Word>> findWordWithPattern(String pattern) {
+        return wordDao.findWordWithPattern("%" + pattern + "%");
     }
-    LiveData<List<Word>> getlikeWord() {
+
+    public LiveData<List<Word>> getlikeWord() {
         return wordDao.getlikeWord();
     }
 
-    List<Word> getAllWordDictionary(String dictionary) throws ExecutionException,InterruptedException {
+    public List<Word> getAllWordDictionary(String dictionary) throws ExecutionException, InterruptedException {
         return new getAllWordDictionaryAsyncTask(wordDao).execute(dictionary).get();
     }
 
-    List<Word> getOtherWord (String studyWord) throws ExecutionException,InterruptedException {
+    public List<Word> getOtherWord(String studyWord) throws ExecutionException, InterruptedException {
         return new getOtherWordAsyncTask(wordDao).execute(studyWord).get();
     }
 
-    List<Word> getPipeiWord () throws ExecutionException,InterruptedException{
+    public List<Word> getPipeiWord() throws ExecutionException, InterruptedException {
         return new getPipeiWordAsyncTask(wordDao).execute().get();
     }
-    List<Word> getAllWords () throws ExecutionException,InterruptedException {
-        return  new getAllWordAsyncTask(wordDao).execute().get();
+
+    public List<Word> getAllWords() throws ExecutionException, InterruptedException {
+        return new getAllWordAsyncTask(wordDao).execute().get();
     }
 
-    Word getStudyWord () throws ExecutionException,InterruptedException{
+    public Word getStudyWord() throws ExecutionException, InterruptedException {
         return new getStudyWordAsyncTask(wordDao).execute().get();
     }
 
-    Word getselectWord (String selectWord) throws ExecutionException,InterruptedException{
+    public Word getselectWord(String selectWord) throws ExecutionException, InterruptedException {
         return new getSelectWordAsyncTask(wordDao).execute(selectWord).get();
     }
 
 
-
-    void insertWords (Word... words) {
-        new InsertAsyncTask (wordDao).execute(words);
+    public void insertWords(Word... words) {
+        new InsertAsyncTask(wordDao).execute(words);
     }
 
-    void deleteWords (Word... words) {
-        new DeleteAsyncTask (wordDao).execute(words);
+    public void deleteWords(Word... words) {
+        new DeleteAsyncTask(wordDao).execute(words);
     }
 
-    void getnewWord (Word... words) throws ExecutionException,InterruptedException{
+    public void getnewWord(Word... words) throws ExecutionException, InterruptedException {
         new getNewWordAsyncTask(wordDao).execute(words);
     }
 

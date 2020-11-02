@@ -1,4 +1,4 @@
-package com.example.cidianl;
+package com.example.cidianl.ui;
 
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,6 +20,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
+
+import com.example.cidianl.R;
+import com.example.cidianl.adapter.StudyAdatpter;
+import com.example.cidianl.bean.Word;
+import com.example.cidianl.model.MyViewModel;
+import com.example.cidianl.utils.DictionarySave;
 
 import java.io.File;
 import java.io.FileOutputStream;

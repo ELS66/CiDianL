@@ -1,4 +1,4 @@
-package com.example.cidianl;
+package com.example.cidianl.ui;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,6 +17,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.example.cidianl.R;
+import com.example.cidianl.bean.Word;
+import com.example.cidianl.model.MyViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package com.example.cidianl;
+package com.example.cidianl.ui;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -18,6 +18,10 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cidianl.R;
+import com.example.cidianl.adapter.MyAdapter;
+import com.example.cidianl.bean.Word;
+import com.example.cidianl.model.MyViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

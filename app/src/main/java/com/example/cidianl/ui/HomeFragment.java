@@ -1,4 +1,4 @@
-package com.example.cidianl;
+package com.example.cidianl.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -28,6 +28,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.cidianl.R;
+import com.example.cidianl.adapter.MyAdapter;
+import com.example.cidianl.bean.Word;
+import com.example.cidianl.model.MyViewModel;
+import com.example.cidianl.utils.DictionarySave;
+import com.example.cidianl.utils.DownloadFile;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;

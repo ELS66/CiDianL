@@ -1,4 +1,4 @@
-package com.example.cidianl;
+package com.example.cidianl.bean;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

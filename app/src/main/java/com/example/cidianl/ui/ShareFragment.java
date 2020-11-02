@@ -1,4 +1,4 @@
-package com.example.cidianl;
+package com.example.cidianl.ui;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -21,6 +21,10 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.cidianl.R;
+import com.example.cidianl.bean.Word;
+import com.example.cidianl.model.MyViewModel;
 
 import java.io.File;
 import java.io.FileInputStream;

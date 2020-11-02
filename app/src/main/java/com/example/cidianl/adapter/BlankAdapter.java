@@ -1,4 +1,4 @@
-package com.example.cidianl;
+package com.example.cidianl.adapter;
 
 import android.media.MediaPlayer;
 import android.os.Environment;
@@ -14,9 +14,12 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cidianl.R;
+import com.example.cidianl.bean.Word;
+
 public class BlankAdapter extends ListAdapter<Word, BlankAdapter.BlankViewHolder> {
 
-    protected BlankAdapter() {
+    public BlankAdapter() {
         super(new DiffUtil.ItemCallback<Word>() {
             @Override
             public boolean areItemsTheSame(@NonNull Word oldItem, @NonNull Word newItem) {
@@ -69,9 +72,12 @@ public class BlankAdapter extends ListAdapter<Word, BlankAdapter.BlankViewHolder
         holder.toggleButtonlove.setVisibility(View.INVISIBLE);
     }
 
-    static class BlankViewHolder extends RecyclerView.ViewHolder{
-        TextView textViewNumber,textViewEnglish,textViewChinese;
+    public static class BlankViewHolder extends RecyclerView.ViewHolder {
+        public TextView textViewNumber;
+        TextView textViewEnglish;
+        TextView textViewChinese;
         ToggleButton toggleButtonlove;
+
         public BlankViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewNumber = itemView.findViewById(R.id.textViewNumber);

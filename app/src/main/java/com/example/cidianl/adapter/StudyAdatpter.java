@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cidianl.R;
 import com.example.cidianl.bean.Word;
+import com.example.cidianl.utils.Animat;
 
 public class StudyAdatpter extends ListAdapter<Word, StudyAdatpter.StudyViewHolder> {
 
@@ -40,13 +41,11 @@ public class StudyAdatpter extends ListAdapter<Word, StudyAdatpter.StudyViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /**if (holder.textViewEnglish.getVisibility() == View.VISIBLE){
-                    holder.textViewEnglish.setVisibility(View.INVISIBLE);
-                    holder.textViewChinese.setVisibility(View.VISIBLE);
+                if (holder.textViewChinese.getVisibility() == View.INVISIBLE) {
+                    Animat.rotation(itemView,holder.textViewEnglish,holder.textViewChinese,300);
                 } else {
-                    holder.textViewEnglish.setVisibility(View.VISIBLE);
-                    holder.textViewChinese.setVisibility(View.INVISIBLE);
-                }*/
+                    Animat.rotation(itemView,holder.textViewChinese,holder.textViewEnglish,300);
+                }
             }
         });
         return holder;

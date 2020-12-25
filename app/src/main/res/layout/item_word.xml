@@ -1,47 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layoutDescription="@xml/item_word_scene2">
-
-    <TextView
-        android:id="@+id/textViewEnglish"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="50dp"
-        android:text="TextView"
-        android:textSize="36sp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewChinese"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="50dp"
-        android:text="TextView"
-        android:textSize="36sp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp"
-        app:cardElevation="5dp"
-        app:cardMaxElevation="30dp"
+        app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardBackgroundColor="@color/colorAccent">
 
-</androidx.constraintlayout.motion.widget.MotionLayout>
+        <TextView
+            android:id="@+id/textViewEnglish"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="75dp"
+            android:layout_marginBottom="75dp"
+            android:elevation="50dp"
+            android:text="TextView"
+            android:textSize="36sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textViewChinese"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="75dp"
+            android:layout_marginBottom="75dp"
+            android:elevation="50dp"
+            android:text="TextView"
+            android:textSize="36sp"
+            android:visibility="invisible" />
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
